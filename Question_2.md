@@ -69,8 +69,8 @@ Query:
 	GROUP BY EmployeeID)
     	
 	SELECT LastName,
-    	       MAX(NumerOfOrders) AS TotalNumberOfOrders
-    	FROM OrdersPerEmployee
+	       MAX(NumerOfOrders) AS TotalNumberOfOrders
+	FROM OrdersPerEmployee
 
 ------------------------------------------------------------------------
 
