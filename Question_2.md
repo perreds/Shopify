@@ -9,6 +9,7 @@ numerical answers below.
 ------------------------------------------------------------------------
 
 ## a. How many orders were shipped by Speedy Express in total?
+
 First step: 
 Join tables Orders and Shippers to create a table with the order ID and the Shipper name of each order
 
@@ -20,16 +21,16 @@ Result: **Speedy Express had 54 Orders**
 Query:
 
 
-WITH OrdersShipper AS
+	WITH OrdersShipper AS
 	(SELECT Orders.OrderID,
     		Shippers.ShipperName
 	FROM [Orders]
 	INNER JOIN [Shippers]
 	ON Orders.ShipperID = Shippers.ShipperID)
-SELECT ShipperName,
-	COUNT (OrderID) As TotalOrders
-FROM OrdersShipper
-WHERE ShipperName = 'Speedy Express'
+	SELECT ShipperName, 
+	       COUNT (OrderID) As TotalOrders
+	FROM OrdersShipper
+	WHERE ShipperName = 'Speedy Express'
 
 
 
@@ -38,7 +39,7 @@ WHERE ShipperName = 'Speedy Express'
 
 ## b. What is the last name of the employee with the most orders?
 
-    We need to get the information of how many orders each employee has made, naming the employee by their last name.
+We need to get the information of how many orders each employee has made, naming the employee by their last name.
 
 Tables Orders and Employees can be used to relate the info of the employee last name to each order. Then, we can group the orders by employee and count them. Finally find the last name of the employee with the maximum number of orders.
 
@@ -59,24 +60,24 @@ Query:
 	(SELECT Orders.OrderID,
         	Employees.LastName,
         	Employees.EmployeeID
-        	FROM [Orders]
-        	INNER JOIN [Employees] ON Orders.EmployeeID = Employees.EmployeeID),
+	FROM [Orders]
+	INNER JOIN [Employees] ON Orders.EmployeeID = Employees.EmployeeID),
     	OrdersPerEmployee AS
     	(SELECT LastName,
     		EmployeeID,
     		COUNT (OrderID) As NumerOfOrders
-    		FROM OrdersEmployees
-    		GROUP BY EmployeeID)
+	FROM OrdersEmployees
+	GROUP BY EmployeeID)
     	
     	Select LastName,
     		MAX(NumerOfOrders) as TotalNumberOfOrders
-	FROM OrdersPerEmployee
+    	FROM OrdersPerEmployee
 
 ------------------------------------------------------------------------
 
 ## c. What product was ordered the most by customers in Germany?
 
-    First Step:
+First Step:
 Tables Customers and Orders can be used to relate the order ID to the Country the order was made by joining them on the Customer ID. 
 
 Second Step
@@ -85,32 +86,32 @@ Use the prior CTE and OrdersDetails table to get the Product ID and the quantity
 Third Step:
 From the Table Products is possible to get the products name and relate it to the quantity ordered using the Product ID. Finally the product with Maximum quantity can be selected.
 
-	RESULT:  *Boston Crab Meat*
+RESULT:  **Boston Crab Meat**
 
-	Query:
+Query:
 
 
-WITH CustomersOrders AS
+	WITH CustomersOrders AS
 	(SELECT Customers.CustomerId,
     		Customers.Country As CustomerCountry,
-            Orders.OrderID
-    From Customers
-    Inner JOIN Orders ON Customers.CustomerId = Orders.CustomerID),
+      		Orders.OrderID
+      	From Customers
+    	Inner JOIN Orders ON Customers.CustomerId = Orders.CustomerID),
     
 	ProductsQuantity as
 	(Select CustomersOrders.CustomerCountry,
     		OrderDetails.ProductID,
-            OrderDetails.Quantity,
-            SUM(Quantity) as 		TotalProductsGermany
+       	OrderDetails.Quantity,
+       	SUM(Quantity) AS TotalProductsGermany
 	From CustomersOrders
 	INNER JOIN OrderDetails ON CustomersOrders.OrderID = OrderDetails.OrderID
-    WHERE CustomerCountry = "Germany"
+    	WHERE CustomerCountry = "Germany"
 	GROUP BY ProductID)
         
-SELECT Products.ProductName,
-        MAX(TotalProductsGermany)
-FROM Products
-INNER JOIN ProductsQuantity ON Products.ProductId = ProductsQuantity.ProductID
+	SELECT Products.ProductName,
+        	MAX(TotalProductsGermany)
+	FROM Products
+	INNER JOIN ProductsQuantity ON Products.ProductId = ProductsQuantity.ProductID
 
 
 
