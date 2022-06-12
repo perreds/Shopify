@@ -8,7 +8,7 @@ numerical answers below.
 
 ------------------------------------------------------------------------
 
-## 1. How many orders were shipped by Speedy Express in total?
+## a. How many orders were shipped by Speedy Express in total?
 First step: 
 Join tables Orders and Shippers to create a table with the order ID and the Shipper name of each order
 
@@ -27,7 +27,7 @@ WITH OrdersShipper AS
 	INNER JOIN [Shippers]
 	ON Orders.ShipperID = Shippers.ShipperID)
 SELECT ShipperName,
-		COUNT (OrderID) As TotalOrders
+	COUNT (OrderID) As TotalOrders
 FROM OrdersShipper
 WHERE ShipperName = 'Speedy Express'
 
@@ -36,7 +36,7 @@ WHERE ShipperName = 'Speedy Express'
 
 ------------------------------------------------------------------------
 
-## 2. What is the last name of the employee with the most orders?
+## b. What is the last name of the employee with the most orders?
 
     We need to get the information of how many orders each employee has made, naming the employee by their last name.
 
@@ -55,27 +55,26 @@ Result: **Peacock**
 
 Query:
 
-WITH OrdersEmployees AS
-		(SELECT Orders.OrderID,
-        		Employees.LastName,
-                Employees.EmployeeID
-		FROM [Orders]
-		INNER JOIN [Employees]
-		ON Orders.EmployeeID = Employees.EmployeeID),
-    OrdersPerEmployee AS
+	WITH OrdersEmployees AS
+	(SELECT Orders.OrderID,
+        	Employees.LastName,
+        	Employees.EmployeeID
+        	FROM [Orders]
+        	INNER JOIN [Employees] ON Orders.EmployeeID = Employees.EmployeeID),
+    	OrdersPerEmployee AS
     	(SELECT LastName,
     		EmployeeID,
-            COUNT (OrderID) As NumerOfOrders
-		FROM OrdersEmployees
-		GROUP BY EmployeeID)
-    
-Select LastName,
-		MAX(NumerOfOrders) as TotalNumberOfOrders
-FROM OrdersPerEmployee
+    		COUNT (OrderID) As NumerOfOrders
+    		FROM OrdersEmployees
+    		GROUP BY EmployeeID)
+    	
+    	Select LastName,
+    		MAX(NumerOfOrders) as TotalNumberOfOrders
+	FROM OrdersPerEmployee
 
 ------------------------------------------------------------------------
 
-## 3. What product was ordered the most by customers in Germany?
+## c. What product was ordered the most by customers in Germany?
 
     First Step:
 Tables Customers and Orders can be used to relate the order ID to the Country the order was made by joining them on the Customer ID. 
