@@ -23,7 +23,7 @@ Query:
 
 	WITH OrdersShipper AS
 	(SELECT Orders.OrderID,
-	Shippers.ShipperName
+	        Shippers.ShipperName
 	FROM [Orders]
 	INNER JOIN [Shippers]
 	ON Orders.ShipperID = Shippers.ShipperID)
@@ -64,13 +64,13 @@ Query:
 	INNER JOIN [Employees] ON Orders.EmployeeID = Employees.EmployeeID),
 	OrdersPerEmployee AS
 	(SELECT LastName,
-	EmployeeID,
+	        EmployeeID,
     	COUNT (OrderID) As NumerOfOrders
 	FROM OrdersEmployees
 	GROUP BY EmployeeID)
     	
 	Select LastName,
-    	MAX(NumerOfOrders) as TotalNumberOfOrders
+    	       MAX(NumerOfOrders) as TotalNumberOfOrders
     	FROM OrdersPerEmployee
 
 ------------------------------------------------------------------------
@@ -95,17 +95,17 @@ Query:
 	(SELECT Customers.CustomerId,
     		Customers.Country As CustomerCountry,
       		Orders.OrderID
-      	From Customers
-    	Inner JOIN Orders ON Customers.CustomerId = Orders.CustomerID),
+	From Customers
+	Inner JOIN Orders ON Customers.CustomerId = Orders.CustomerID),
     
 	ProductsQuantity as
 	(Select CustomersOrders.CustomerCountry,
-    		OrderDetails.ProductID,
+	        OrderDetails.ProductID,
        	OrderDetails.Quantity,
        	SUM(Quantity) AS TotalProductsGermany
 	From CustomersOrders
 	INNER JOIN OrderDetails ON CustomersOrders.OrderID = OrderDetails.OrderID
-    	WHERE CustomerCountry = "Germany"
+	WHERE CustomerCountry = "Germany"
 	GROUP BY ProductID)
         
 	SELECT Products.ProductName,
