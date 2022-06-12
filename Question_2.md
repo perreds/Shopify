@@ -23,7 +23,7 @@ Query:
 
 	WITH OrdersShipper AS
 	(SELECT Orders.OrderID,
-    		Shippers.ShipperName
+	Shippers.ShipperName
 	FROM [Orders]
 	INNER JOIN [Shippers]
 	ON Orders.ShipperID = Shippers.ShipperID)
@@ -62,15 +62,15 @@ Query:
         	Employees.EmployeeID
 	FROM [Orders]
 	INNER JOIN [Employees] ON Orders.EmployeeID = Employees.EmployeeID),
-    	OrdersPerEmployee AS
-    	(SELECT LastName,
-    		EmployeeID,
-    		COUNT (OrderID) As NumerOfOrders
+	OrdersPerEmployee AS
+	(SELECT LastName,
+	EmployeeID,
+    	COUNT (OrderID) As NumerOfOrders
 	FROM OrdersEmployees
 	GROUP BY EmployeeID)
     	
-    	Select LastName,
-    		MAX(NumerOfOrders) as TotalNumberOfOrders
+	Select LastName,
+    	MAX(NumerOfOrders) as TotalNumberOfOrders
     	FROM OrdersPerEmployee
 
 ------------------------------------------------------------------------
