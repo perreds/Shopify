@@ -25,10 +25,9 @@ Query:
 	(SELECT Orders.OrderID,
 	        Shippers.ShipperName
 	FROM [Orders]
-	INNER JOIN [Shippers]
-	ON Orders.ShipperID = Shippers.ShipperID)
+	INNER JOIN [Shippers] ON Orders.ShipperID = Shippers.ShipperID)
 	SELECT ShipperName, 
-	       COUNT (OrderID) As TotalOrders
+	       COUNT (OrderID) AS TotalOrders
 	FROM OrdersShipper
 	WHERE ShipperName = 'Speedy Express'
 
@@ -65,12 +64,12 @@ Query:
 	OrdersPerEmployee AS
 	(SELECT LastName,
 	        EmployeeID,
-    	COUNT (OrderID) As NumerOfOrders
+    	COUNT (OrderID) AS NumerOfOrders
 	FROM OrdersEmployees
 	GROUP BY EmployeeID)
     	
-	Select LastName,
-    	       MAX(NumerOfOrders) as TotalNumberOfOrders
+	SELECT LastName,
+    	       MAX(NumerOfOrders) AS TotalNumberOfOrders
     	FROM OrdersPerEmployee
 
 ------------------------------------------------------------------------
@@ -95,21 +94,21 @@ Query:
 	(SELECT Customers.CustomerId,
     		Customers.Country As CustomerCountry,
       		Orders.OrderID
-	From Customers
-	Inner JOIN Orders ON Customers.CustomerId = Orders.CustomerID),
+	FROM Customers
+	INNER JOIN Orders ON Customers.CustomerId = Orders.CustomerID),
     
-	ProductsQuantity as
-	(Select CustomersOrders.CustomerCountry,
+	ProductsQuantity AS
+	(SELECT CustomersOrders.CustomerCountry,
 	        OrderDetails.ProductID,
        	OrderDetails.Quantity,
        	SUM(Quantity) AS TotalProductsGermany
-	From CustomersOrders
+	FROM CustomersOrders
 	INNER JOIN OrderDetails ON CustomersOrders.OrderID = OrderDetails.OrderID
 	WHERE CustomerCountry = "Germany"
 	GROUP BY ProductID)
         
 	SELECT Products.ProductName,
-        	MAX(TotalProductsGermany)
+	       MAX(TotalProductsGermany)
 	FROM Products
 	INNER JOIN ProductsQuantity ON Products.ProductId = ProductsQuantity.ProductID
 
